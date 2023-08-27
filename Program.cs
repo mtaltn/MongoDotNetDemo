@@ -1,5 +1,6 @@
 using MongoDotNetDemo.Models;
 using MongoDotNetDemo.Services.Category;
+using MongoDotNetDemo.Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("MyDb")
     );
+
+//resolving the CategoryService dependency here
 builder.Services.AddTransient<ICategoryService,CategoryService>();
+
+//resolving the ProductService dependency here
+builder.Services.AddTransient<IProductService,ProductService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -16,6 +16,7 @@ namespace MongoDotNetDemo.Models
 
         public string? ProductName { get; set; }
 
-        public int CategoryId { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? CategoryId { get; set; }
     }
 }
