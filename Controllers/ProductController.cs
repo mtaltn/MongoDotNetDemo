@@ -40,6 +40,7 @@ namespace MongoDotNetDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Product product)
         {
+            product.CategoryName = null;
             await _productService.CreateAsync(product);
             return Ok("Created Succesfully");
         }
@@ -48,6 +49,7 @@ namespace MongoDotNetDemo.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] Product product)
         {
+            product.CategoryName = null;
             var checkproduct = _productService.GetById(id);
             if (checkproduct == null)
                 return NotFound("product Not Found");

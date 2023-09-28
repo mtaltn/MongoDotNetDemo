@@ -18,5 +18,9 @@ namespace MongoDotNetDemo.Models
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string? CategoryId { get; set; }
+
+        // this property, will not store in database, if you pass a nul value to it, so make sure make it before passing to db
+        [BsonIgnoreIfNull] 
+        public string? CategoryName { get; set; }
     }
 }

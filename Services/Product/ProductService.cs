@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+﻿  using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDotNetDemo.Models;
@@ -18,8 +18,33 @@ namespace MongoDotNetDemo.Services.Product
             _products = mongoDatabase.GetCollection<Models.Product>(dbSettings.Value.ProductsCollectionName);
         }
 
-        public async Task<IEnumerable<Models.Product>> GetAllAsyc() =>
-            await _products.Find(_ => true).ToListAsync();
+        //public async Task<IEnumerable<Models.Product>> GetAllAsyc() =>
+        //    await _products.Find(_ => true).ToListAsync();
+
+        public async Task<IEnumerable<Models.Product>> GetAllAsyc()
+        {
+            var pipeline = new BsonDocument[]
+            {
+                new BsonDocument("$lookup",new BsonDocument
+                {
+                    {"from", "CategoryCollection"},
+                    {"localField", "CategoryId"},
+                    {"foreignField", "_id"},
+                    {"as", "product_category"}
+                }),
+                new BsonDocument("$unwind", "$product_category"),
+                new BsonDocument("$project", new BsonDocument
+                {
+                    {"_id", 1 },
+                    {"CategoryId", 1 },
+                    {"ProductName", 1 },
+                    {"CategoryName", "$product_category.CategoryName" },
+                })
+            };
+
+            var result = await _products.Aggregate<Models.Product>(pipeline).ToListAsync();
+            return result;
+        }
 
         public async Task<Models.Product> GetById(string id) =>
             await _products.Find(a => a.Id == id).FirstOrDefaultAsync();

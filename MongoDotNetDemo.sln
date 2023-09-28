@@ -8,11 +8,14 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		OnurTekinTest|Any CPU = OnurTekinTest|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9F8B7AE2-3380-4BE7-B5AA-D1E00DBDEBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F8B7AE2-3380-4BE7-B5AA-D1E00DBDEBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F8B7AE2-3380-4BE7-B5AA-D1E00DBDEBCD}.OnurTekinTest|Any CPU.ActiveCfg = OnurTekinTest|Any CPU
+		{9F8B7AE2-3380-4BE7-B5AA-D1E00DBDEBCD}.OnurTekinTest|Any CPU.Build.0 = OnurTekinTest|Any CPU
 		{9F8B7AE2-3380-4BE7-B5AA-D1E00DBDEBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F8B7AE2-3380-4BE7-B5AA-D1E00DBDEBCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

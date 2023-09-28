@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: example_password
+      MYSQL_DATABASE: example_db
+
+  rabbitmq:
+    image: "rabbitmq:3.8" # Kullanmak istediğiniz RabbitMQ sürümünü belirtin.
+    ports:
+      - "5672:5672" # RabbitMQ portunu dışa açın
+      - "15672:15672" # RabbitMQ yönetim arayüzü portunu dışa açın
+    environment:
+      RABBITMQ_DEFAULT_USER: guest # RabbitMQ kullanıcı adı
+      RABBITMQ_DEFAULT_PASS: guest # RabbitMQ şifre
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq # Verilerin kalıcı olarak saklandığı bir volume oluşturun
+
+  mongo:
+    image: "mongo:latest" # Kullanmak istediğiniz MongoDB sürümünü belirtin.
+    ports:
+      - "27017:27017" # MongoDB portunu dışa açın
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: your_user # MongoDB root kullanıcı adı
+      MONGO_INITDB_ROOT_PASSWORD: your_password # MongoDB root şifre
+    volumes:
+      - mongo_data:/data/db # Verilerin kalıcı olarak saklandığı bir volume oluşturun
+  
+  django:
+    build: .
+    container_name: django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /usr/src/app:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pgdb
+    
+  pgdb:
+    image: postgres
+    container_name: pgdb
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+
+  pg-admin:
+    image: dpage/pgadmin4:6
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@email.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:5050"
+  
+ 
+
+volumes:
+  rabbitmq_data: # RabbitMQ için veri saklama alanı
+  mongo_data: # MongoDB için veri saklama alanı
+  postgres_data:
+  data:
